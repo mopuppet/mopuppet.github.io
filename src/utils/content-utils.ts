@@ -81,3 +81,35 @@ export async function getCategoryList(): Promise<Category[]> {
   }
   return ret
 }
+
+export type Project = {
+  name: string
+  count: number
+}
+
+export async function getProjectList(): Promise<Category[]> {
+  const allBlogPosts = await getCollection('posts', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true
+  })
+  const count: { [key: string]: number } = {}
+  allBlogPosts.map(post => {
+    if (!post.data.project) {
+      const ucKey = i18n(I18nKey.uncategorized)
+      count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1
+      return
+    }
+    count[post.data.project] = count[post.data.project]
+      ? count[post.data.project] + 1
+      : 1
+  })
+
+  const lst = Object.keys(count).sort((a, b) => {
+    return a.toLowerCase().localeCompare(b.toLowerCase())
+  })
+
+  const ret: Project[] = []
+  for (const c of lst) {
+    ret.push({ name: c, count: count[c] })
+  }
+  return ret
+}

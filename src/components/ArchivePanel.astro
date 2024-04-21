@@ -9,8 +9,9 @@ interface Props {
     keyword: string;
     tags: string[];
     categories: string[];
+    projects: string[];
 }
-const { keyword, tags, categories} = Astro.props;
+const { keyword, tags, categories, projects} = Astro.props;
 
 let posts = await getSortedPosts()
 
@@ -24,6 +25,13 @@ if (Array.isArray(categories) && categories.length > 0) {
     posts = posts.filter(post =>
         (post.data.category && categories.includes(post.data.category)) ||
         (!post.data.category && categories.includes(UNCATEGORIZED))
+    );
+}
+
+if (Array.isArray(projects) && projects.length > 0) {
+    posts = posts.filter(post =>
+        (post.data.project && projects.includes(post.data.project)) ||
+        (!post.data.project && projects.includes(UNCATEGORIZED))
     );
 }
 

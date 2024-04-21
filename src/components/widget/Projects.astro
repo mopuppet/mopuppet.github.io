@@ -1,0 +1,38 @@
+---
+import WidgetLayout from "./WidgetLayout.astro";
+
+import {i18n} from "../../i18n/translation";
+import I18nKey from "../../i18n/i18nKey";
+import {Project, getProjectList} from "../../utils/content-utils";
+import {getProjectUrl} from "../../utils/url-utils"; //fix this
+import ButtonLink from "../control/ButtonLink.astro";
+
+const projects = await getProjectList();
+
+const COLLAPSED_HEIGHT = "7.5rem";
+const COLLAPSE_THRESHOLD = 5;
+
+const isCollapsed = projects.length >= COLLAPSE_THRESHOLD;
+
+interface Props {
+    class?: string;
+    style?: string;
+}
+const className = Astro.props.class
+const style = Astro.props.style
+
+---
+
+<WidgetLayout name="Projects" id="projects" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
+                class={className} style={style}
+>
+    {projects.map((p: Project) =>
+        <ButtonLink
+            url={getProjectUrl(p.name)}
+            badge={p.count}
+            label=`View all posts in the ${p.name} category`
+        >
+            {p.name}
+        </ButtonLink>
+    )}
+</WidgetLayout>

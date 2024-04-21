@@ -24,6 +24,13 @@ export function getCategoryUrl(category: string): string | null {
   return `/archive/category/${category}`
 }
 
+export function getProjectUrl(project: string): string | null {
+  if (!project) return null
+  if (project === i18n(i18nKey.uncategorized))
+    return '/archive/project/uncategorized'
+  return `/archive/project/${project}`
+}
+
 export function getDir(path: string): string {
   const lastSlashIndex = path.lastIndexOf('/')
   if (lastSlashIndex < 0) {

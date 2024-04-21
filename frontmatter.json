@@ -52,6 +52,11 @@
           "type": "string"
         },
         {
+          "title": "project",
+          "name": "project",
+          "type": "string"
+        },
+        {
           "title": "draft",
           "name": "draft",
           "type": "boolean"
